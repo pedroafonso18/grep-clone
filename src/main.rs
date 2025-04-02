@@ -3,7 +3,8 @@ mod clicommands;
 
 fn main() {
     let args = clicommands::Cli::parse();
-    let contents = fs::read_to_string(&args.file).expect("Error");
+    for file in args.file{
+    let contents = fs::read_to_string(&file).expect("Error");
 
     let search_term = if args.ignore_case {
         args.find.to_lowercase()
@@ -34,8 +35,9 @@ fn main() {
                 println!("Code inside brackets:\n{}", bracket_content);
             }
             println!(
-                "The text '{}' was found on line {}: {}",
+                "The text '{}' was found on file: {}, line {}: {}",
                 args.find,
+                file.rsplit('/').next().unwrap_or(&file).to_string(),
                 line_number + 1,
                 line
             );
@@ -43,6 +45,7 @@ fn main() {
     }
 
     if !found {
-        println!("The text '{}' was not found in the file.", args.find);
+        println!("The text '{}' was not found in the file: {}.", args.find, file.rsplit('/').next().unwrap_or(&file).to_string());
+    }
     }
 }
