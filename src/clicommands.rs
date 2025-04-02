@@ -3,14 +3,15 @@ use clap::Parser;
 #[derive(Parser)]
 #[command(name = "grepbutbetter", about = "Search for patterns in files")]
 pub struct Cli {
-    // search line
+    // search string in files
     #[clap(value_name = "PATTERN")]
     pub find: String,
     
-    /// search in files
+    // search in files, may be multiple
     #[clap(value_name = "FILE", num_args = 1..)]
     pub file: Vec<String>,
-    
+
+    // flag for case insensitive search
     #[clap(short, long, help = "Perform a case-insensitive search")]
     pub ignore_case: bool,
 }
