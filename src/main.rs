@@ -1,10 +1,12 @@
 use std::fs;
 use std::path::Path;
+use colored::Colorize;
 mod clicommands;
 
 fn main() {
     let args = clicommands::Cli::parse();
 
+    let mut any_found = false;
     for file in &args.file {
         let path = Path::new(file);
         if !path.is_file() {
@@ -12,7 +14,7 @@ fn main() {
         }
 
         let contents = fs::read_to_string(file).unwrap_or_else(|e| {
-            eprintln!("Error reading file '{}': {}", file, e);
+            eprintln!("{}", format!("Error reading file '{}': {}", file, e).red());
             std::process::exit(1);
         });
 
@@ -22,7 +24,6 @@ fn main() {
             args.find.clone()
         };
 
-        let mut found = false;
         for (line_number, line) in contents.lines().enumerate() {
             let line_to_search = if args.ignore_case {
                 line.to_lowercase()
@@ -31,7 +32,7 @@ fn main() {
             };
 
             if line_to_search.contains(&search_term) {
-                found = true;
+                any_found = true;
                 if line.contains("{") && !line.contains("}") {
                     let mut bracket_content = String::new();
                     bracket_content.push_str(line);
@@ -42,28 +43,37 @@ fn main() {
                             break;
                         }
                     }
-                    println!("Code inside brackets:\n{}", bracket_content);
+                    println!("{}", format!("Code inside brackets:\n{}", bracket_content).blue());
                 }
-                println!(
-                    "The text '{}' was found in file: {}, line {}: {}",
-                    args.find,
-                    path.file_name()
-                        .unwrap_or_else(|| std::ffi::OsStr::new("unknown"))
-                        .to_string_lossy(),
-                    line_number + 1,
-                    line
-                );
+
+                if args.color {
+                    println!(
+                        "The text '{}' was found in file: {}, line {}: {}",
+                        args.find.cyan(),
+                        path.file_name()
+                            .unwrap_or_else(|| std::ffi::OsStr::new("unknown"))
+                            .to_string_lossy()
+                            .yellow(),
+                        (line_number + 1).to_string().red(),
+                        line.green()
+                    );
+                } else {
+                    println!(
+                        "The text '{}' was found in file: {}, line {}: {}",
+                        args.find,
+                        path.file_name()
+                            .unwrap_or_else(|| std::ffi::OsStr::new("unknown"))
+                            .to_string_lossy(),
+                        line_number + 1,
+                        line
+                    );
+                }
             }
         }
 
-        if !found {
-            println!(
-                "The text '{}' was not found in the file: {}.",
-                args.find,
-                path.file_name()
-                    .unwrap_or_else(|| std::ffi::OsStr::new("unknown"))
-                    .to_string_lossy()
-            );
-        }
+    }
+
+    if !any_found  {
+        println!("{}", format!("The text '{}' was not found in any file.", args.find).red());
     }
 }

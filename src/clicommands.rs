@@ -15,8 +15,8 @@ pub struct Cli {
     #[clap(short, long, help = "Perform a case-insensitive search")]
     pub ignore_case: bool,
 
-    #[clap(short, long, help = "List all files in the directory!")]
-    pub list_files: bool,
+    #[clap(short, long, help = "Colorize the string search")]
+    pub color: bool,
 
     
 }

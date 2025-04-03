@@ -7,6 +7,7 @@
 - Search for a specific text in a file.
 - Case-insensitive search using the `--ignore-case` or `-i` flag.
 - Extract and display code blocks enclosed in `{}` when a match is found.
+- Colorize the output using the `--color` or `-c` flag.
 
 ## Installation
 
@@ -54,6 +55,11 @@ grepbutbetter example *
 Perform a case-insensitive search:
 ```bash
 grepbutbetter example file.txt --ignore-case
+```
+
+Search for the word `example` in `file.txt` with colored output:
+```bash
+grepbutbetter example file.txt --color
 ```
 
 ### Output
