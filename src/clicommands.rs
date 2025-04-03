@@ -14,6 +14,11 @@ pub struct Cli {
     // flag for case insensitive search
     #[clap(short, long, help = "Perform a case-insensitive search")]
     pub ignore_case: bool,
+
+    #[clap(short, long, help = "List all files in the directory!")]
+    pub list_files: bool,
+
+    
 }
 
 impl Cli {
