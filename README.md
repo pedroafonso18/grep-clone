@@ -45,6 +45,12 @@ Search for the word `example` in `file.txt`:
 grepbutbetter example file.txt
 ```
 
+Search for the word in all the files:
+
+```bash
+grepbutbetter example *
+```
+
 Perform a case-insensitive search:
 ```bash
 grepbutbetter example file.txt --ignore-case

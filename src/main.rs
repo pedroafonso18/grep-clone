@@ -1,31 +1,9 @@
-use std::env::current_dir;
 use std::fs;
 use std::path::Path;
 mod clicommands;
 
 fn main() {
     let args = clicommands::Cli::parse();
-
-    if args.list_files {
-        match current_dir() {
-            Ok(dir) => match fs::read_dir(dir) {
-                Ok(entries) => {
-                    for entry in entries {
-                        if let Ok(entry) = entry {
-                            println!("{}", entry.file_name().to_string_lossy());
-                        }
-                    }
-                }
-                Err(e) => {
-                    eprintln!("Error reading directory: {}", e);
-                }
-            },
-            Err(e) => {
-                eprintln!("Error getting current directory: {}", e);
-            }
-        }
-        return;
-    }
 
     for file in &args.file {
         let path = Path::new(file);
