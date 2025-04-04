@@ -31,7 +31,7 @@ fn main() {
                 line.to_string()
             };
 
-            if line_to_search.contains(&search_term) {
+            if (args.invert_search && !line_to_search.contains(&search_term)) || (!args.invert_search && line_to_search.contains(&search_term)) {
                 any_found = true;
                 if line.contains("{") && !line.contains("}") {
                     let mut bracket_content = String::new();

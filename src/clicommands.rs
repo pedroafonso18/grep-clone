@@ -15,9 +15,13 @@ pub struct Cli {
     #[clap(short, long, help = "Perform a case-insensitive search")]
     pub ignore_case: bool,
 
+    // color.
     #[clap(short, long, help = "Colorize the string search")]
     pub color: bool,
 
+    // invert match (if it doesn't find it in the file)
+    #[clap(short, long, help = "Invert search")]
+    pub invert_search: bool,
     
 }
 
